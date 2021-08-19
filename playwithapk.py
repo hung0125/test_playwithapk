@@ -65,13 +65,13 @@ def rep_str():
 def clean():
     deltarget = input('Specify folder name (*=all): ')
     if deltarget == '*':
-        print("[i] Removing... Please don't stop this script until I said done...")
+        print("[i] Removing... Please don't stop this script until I say done...")
         rmtree(out_storage)
         mkdir(out_storage)
         print("[i] Done")
     else:
         try:
-            print("[i] Removing... Please don't stop this script until I said done...")
+            print("[i] Removing... Please don't stop this script until I say done...")
             rmtree(f'{out_storage}{deltarget}')
             print("[i] Done")
         except:
