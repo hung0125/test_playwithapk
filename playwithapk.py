@@ -47,16 +47,34 @@ def decom():
     else:
         for i in range(len(targets)):
             #add range options here
-            case = rr(10001,99999)
-            out = f'{out_storage}{case}'
-            print(f'[i] Decompiling "{targets[i]}"... and outputting it to "{out}"')
-            disp(f'java -jar {util_storage}apktool.jar d "{target_storage}{targets[i]}" -o {out}')
-            print('[i] Done.')
+            require = input(f'For {targets[i]} ,Decompile? (a)ll/(r)esrc/(s)rc: ')
+            srcapk = f'{target_storage}{targets[i]}'
+            out = f'{out_storage}{targets[i]}'
+            print(f'[i] Decompiling "{targets[i]}"...')
+            if require == 'a':
+                disp(f'java -jar {util_storage}apktool.jar d "{srcapk}" -o "{out}"')
+            elif require == 'r':
+                disp(f'java -jar {util_storage}apktool.jar d "{srcapk}" -o "{out}" -s')
+            elif require == 's':
+                disp(f'java -jar {util_storage}apktool.jar d "{srcapk}" -o "{out}" -r')
+            else:
+                print('[e] Invalid command, skipped.')
 
 #Menu -> Recompile
 def recom():
-    pass
-
+    targets = next(walk(out_storage), (None, None, []))[2]
+    retarget = input('Specify folder name (*=all): ')
+    if retarget == '*':
+        for i in range(len(targets)):
+            print(f'[i] Recompiling {targets[i]}...')
+            disp(f'java -jar {util_storage}apktool.jar b "{out_storage}{targets[i]}"')
+    else:
+        try:
+            print(f'[i] Recompiling {retarget}...')
+            disp(f'java -jar {util_storage}apktool.jar b "{out_storage}{retarget}"')
+            print('[i] Built apk can be found in the "dist" folder')
+        except:
+            print("[e] Invalid name.")
 #Menu -> hack -> replace all strings
 def rep_str():
     pass
@@ -77,10 +95,12 @@ def clean():
         except:
             print("[e] Invalid name.")
             
-
+def Tutorial():
+    pass
 
 def menu():
     print('\n\nWelcome to playwithapk\n[i] Make sure java environment is installed on this system.\n[i] To decompile, put your apks inside the "target" folder.\n\nOptions: ')
+    print('0: Tutorial')
     print('1: Download utils (do it first if you first time run this script)')
     print('2: Decompile apk')
     print('3: Recompile apk')
@@ -88,7 +108,9 @@ def menu():
     print('99: Exit')
     option = int(input('Select your option (num): '))
 
-    if option == 1:
+    if option == 0:
+        tutorial()
+    elif option == 1:
         download()
     elif option == 2:
         decom()
